@@ -90,6 +90,9 @@ Stars are always welcome!
 For bugs and feature requests,
 [please create an issue](https://github.com/TomerAberbach/weak-merge/issues/new).
 
+For pull requests, please read the
+[contributing guidelines](https://github.com/TomerAberbach/lfi/blob/master/contributing.md).
+
 ## License
 
 [Apache 2.0](https://github.com/TomerAberbach/weak-merge/blob/main/license)
