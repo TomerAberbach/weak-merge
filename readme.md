@@ -92,5 +92,6 @@ For bugs and feature requests,
 
 ## License
 
-[Apache License 2.0](https://github.com/TomerAberbach/weak-merge/blob/main/license)
-© [Tomer Aberbach](https://github.com/TomerAberbach)
+[Apache 2.0](https://github.com/TomerAberbach/weak-merge/blob/main/license)
+
+This is not an official Google product.
