@@ -7,7 +7,13 @@
     "url": "https://tomeraberba.ch"
   },
   "description": "A module for merging WeakSets and WeakMaps.",
-  "keywords": [],
+  "keywords": [
+    "weakset",
+    "weak-set",
+    "weakmap",
+    "weak-map",
+    "merge"
+  ],
   "homepage": "https://github.com/TomerAberbach/weak-merge",
   "repository": "TomerAberbach/weak-merge",
   "bugs": {

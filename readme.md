@@ -85,28 +85,32 @@ for more documentation.
 
 ## Why?
 
-Merging `WeakSet` or `WeakMap` instances is not trivial because they [are not enumerable](https://javascript.info/weakmap-weakset).
+Merging `WeakSet` or `WeakMap` instances is not trivial because they
+[are not enumerable](https://javascript.info/weakmap-weakset).
 
 ## Performance
 
-`WeakSet` instances returned from `mergeWeakSets` and `WeakMap` instances returned from `mergeWeakMaps` are not as performant as native `WeakSet` and `WeakMap` instances (due to the lack of a native way to merge or copy `WeakSet` and `WeakMap` instances):
+`WeakSet` instances returned from `mergeWeakSets` and `WeakMap` instances
+returned from `mergeWeakMaps` are not as performant as native `WeakSet` and
+`WeakMap` instances (due to the lack of a native way to merge or copy `WeakSet`
+and `WeakMap` instances):
 
 ### `WeakSet` Time Complexity
 
-Operation | Native `WeakSet` | Merge of `n` native `WeakSet` instances
-----------|------------------|----------------------------------------
-`add`     | `O(1)`           | `O(1)`
-`delete`  | `O(1)`           | `O(1)`
-`has`     | `O(1)`           | `O(n)`
+| Operation | Native `WeakSet` | Merge of `n` native `WeakSet` instances |
+| --------- | ---------------- | --------------------------------------- |
+| `add`     | `O(1)`           | `O(1)`                                  |
+| `delete`  | `O(1)`           | `O(1)`                                  |
+| `has`     | `O(1)`           | `O(n)`                                  |
 
 ### `WeakMap` Time Complexity
 
-Operation | Native `WeakMap` | Merge of `n` native `WeakMap` instances
-----------|------------------|----------------------------------------
-`delete`  | `O(1)`           | `O(1)`
-`get`     | `O(1)`           | `O(n)`
-`has`     | `O(1)`           | `O(n)`
-`set`     | `O(1)`           | `O(1)`
+| Operation | Native `WeakMap` | Merge of `n` native `WeakMap` instances |
+| --------- | ---------------- | --------------------------------------- |
+| `delete`  | `O(1)`           | `O(1)`                                  |
+| `get`     | `O(1)`           | `O(n)`                                  |
+| `has`     | `O(1)`           | `O(n)`                                  |
+| `set`     | `O(1)`           | `O(1)`                                  |
 
 ## Contributing
 
