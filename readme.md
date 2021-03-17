@@ -47,7 +47,7 @@ console.log(weakSet1.has(a))
 //=> true
 
 mergedWeakSet.add(d)
-console.log(mergedWeakSet.had(d))
+console.log(mergedWeakSet.has(d))
 //=> true
 
 console.log(weakSet1.has(d))
