@@ -37,42 +37,48 @@ test.prop([arraysArb, fc.array(fc.object(), { minLength: 1 })])(
   },
 )
 
-test.prop([
-  arraysArb
-    .filter(arrays => arrays.some(array => array.length > 0))
-    .chain(arrays => {
-      const valueArb = fc.oneof(fc.object(), fc.constantFrom(...arrays.flat()))
+test.prop(
+  [
+    arraysArb
+      .filter(arrays => arrays.some(array => array.length > 0))
+      .chain(arrays => {
+        const valueArb = fc.oneof(
+          fc.object(),
+          fc.constantFrom(...arrays.flat()),
+        )
 
-      return fc.tuple(
-        fc.constant(arrays),
-        fc.commands(
-          [
-            valueArb.map(value => ({
-              check: () => true,
-              run: (model: WeakSet<WeakKey>, real: WeakSet<WeakKey>) => {
-                model.add(value)
-                real.add(value)
-              },
-              toString: () => `add(${fc.stringify(value)})`,
-            })),
-            valueArb.map(value => ({
-              check: () => true,
-              run: (model: WeakSet<WeakKey>, real: WeakSet<WeakKey>) =>
-                expect(real.delete(value)).toBe(model.delete(value)),
-              toString: () => `delete(${fc.stringify(value)})`,
-            })),
-            valueArb.map(value => ({
-              check: () => true,
-              run: (model: WeakSet<WeakKey>, real: WeakSet<WeakKey>) =>
-                expect(real.has(value)).toBe(model.has(value)),
-              toString: () => `has(${fc.stringify(value)})`,
-            })),
-          ],
-          { maxCommands: 1000 },
-        ),
-      )
-    }),
-])(
+        return fc.tuple(
+          fc.constant(arrays),
+          fc.commands(
+            [
+              valueArb.map(value => ({
+                check: () => true,
+                run: (model: WeakSet<WeakKey>, real: WeakSet<WeakKey>) => {
+                  model.add(value)
+                  real.add(value)
+                },
+                toString: () => `add(${fc.stringify(value)})`,
+              })),
+              valueArb.map(value => ({
+                check: () => true,
+                run: (model: WeakSet<WeakKey>, real: WeakSet<WeakKey>) =>
+                  expect(real.delete(value)).toBe(model.delete(value)),
+                toString: () => `delete(${fc.stringify(value)})`,
+              })),
+              valueArb.map(value => ({
+                check: () => true,
+                run: (model: WeakSet<WeakKey>, real: WeakSet<WeakKey>) =>
+                  expect(real.has(value)).toBe(model.has(value)),
+                toString: () => `has(${fc.stringify(value)})`,
+              })),
+            ],
+            { maxCommands: 1000 },
+          ),
+        )
+      }),
+  ],
+  { numRuns: 500 },
+)(
   `mergeWeakSets returns a WeakSet that behaves like a non-merged WeakSet containing the same values as the merged WeakSets`,
   ([arrays, commands]) => {
     fc.modelRun(

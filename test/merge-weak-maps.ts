@@ -40,65 +40,68 @@ test.prop([arraysOfEntriesArb, fc.array(entryArb, { minLength: 1 })])(
   },
 )
 
-test.prop([
-  arraysOfEntriesArb
-    .filter(arrays => arrays.some(entries => entries.length > 0))
-    .chain(arrays => {
-      const keyArb = fc.oneof(
-        fc.object(),
-        fc.constantFrom(
-          ...arrays.flatMap(entries => entries.map(([key]) => key)),
-        ),
-      )
+test.prop(
+  [
+    arraysOfEntriesArb
+      .filter(arrays => arrays.some(entries => entries.length > 0))
+      .chain(arrays => {
+        const keyArb = fc.oneof(
+          fc.object(),
+          fc.constantFrom(
+            ...arrays.flatMap(entries => entries.map(([key]) => key)),
+          ),
+        )
 
-      return fc.tuple(
-        fc.constant(arrays),
-        fc.commands(
-          [
-            keyArb.map(key => ({
-              check: () => true,
-              run: (
-                model: WeakMap<WeakKey, unknown>,
-                real: WeakMap<WeakKey, unknown>,
-              ) => expect(real.delete(key)).toBe(model.delete(key)),
-              toString: () => `delete(${fc.stringify(key)})`,
-            })),
-            keyArb.map(key => ({
-              check: () => true,
-              run: (
-                model: WeakMap<WeakKey, unknown>,
-                real: WeakMap<WeakKey, unknown>,
-              ) => expect(real.get(key)).toBe(model.get(key)),
-              toString: () => `get(${fc.stringify(key)})`,
-            })),
-            keyArb.map(key => ({
-              check: () => true,
-              run: (
-                model: WeakMap<WeakKey, unknown>,
-                real: WeakMap<WeakKey, unknown>,
-              ) => expect(real.has(key)).toBe(model.has(key)),
-              toString: () => `has(${fc.stringify(key)})`,
-            })),
-            fc
-              .oneof(entryArb, fc.tuple(keyArb, fc.anything()))
-              .map(([key, value]) => ({
+        return fc.tuple(
+          fc.constant(arrays),
+          fc.commands(
+            [
+              keyArb.map(key => ({
                 check: () => true,
                 run: (
                   model: WeakMap<WeakKey, unknown>,
                   real: WeakMap<WeakKey, unknown>,
-                ) => {
-                  model.set(key, value)
-                  real.set(key, value)
-                },
-                toString: () =>
-                  `set(${fc.stringify(key)}, ${fc.stringify(value)})`,
+                ) => expect(real.delete(key)).toBe(model.delete(key)),
+                toString: () => `delete(${fc.stringify(key)})`,
               })),
-          ],
-          { maxCommands: 1000 },
-        ),
-      )
-    }),
-])(
+              keyArb.map(key => ({
+                check: () => true,
+                run: (
+                  model: WeakMap<WeakKey, unknown>,
+                  real: WeakMap<WeakKey, unknown>,
+                ) => expect(real.get(key)).toBe(model.get(key)),
+                toString: () => `get(${fc.stringify(key)})`,
+              })),
+              keyArb.map(key => ({
+                check: () => true,
+                run: (
+                  model: WeakMap<WeakKey, unknown>,
+                  real: WeakMap<WeakKey, unknown>,
+                ) => expect(real.has(key)).toBe(model.has(key)),
+                toString: () => `has(${fc.stringify(key)})`,
+              })),
+              fc
+                .oneof(entryArb, fc.tuple(keyArb, fc.anything()))
+                .map(([key, value]) => ({
+                  check: () => true,
+                  run: (
+                    model: WeakMap<WeakKey, unknown>,
+                    real: WeakMap<WeakKey, unknown>,
+                  ) => {
+                    model.set(key, value)
+                    real.set(key, value)
+                  },
+                  toString: () =>
+                    `set(${fc.stringify(key)}, ${fc.stringify(value)})`,
+                })),
+            ],
+            { maxCommands: 1000 },
+          ),
+        )
+      }),
+  ],
+  { numRuns: 500 },
+)(
   `mergeWeakMaps returns a WeakMap that behaves like a non-merged WeakMap containing the same values as the merged WeakMaps`,
   ([arrays, commands]) => {
     fc.modelRun(
