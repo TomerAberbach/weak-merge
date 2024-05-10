@@ -4,13 +4,16 @@
 
 <div align="center">
   <a href="https://npmjs.org/package/weak-merge">
-    <img src="https://badgen.now.sh/npm/v/weak-merge" alt="version" />
+    <img src="https://badgen.net/npm/v/weak-merge" alt="version" />
   </a>
   <a href="https://github.com/TomerAberbach/weak-merge/actions">
     <img src="https://github.com/TomerAberbach/weak-merge/workflows/CI/badge.svg" alt="CI" />
   </a>
-  <a href="https://bundlephobia.com/result?p=weak-merge">
-    <img src="https://badgen.net/bundlephobia/minzip/weak-merge" alt="minzip size" />
+  <a href="https://unpkg.com/weak-merge/dist/index.min.js">
+    <img src="https://deno.bundlejs.com/?q=weak-merge&badge" alt="gzip size" />
+  </a>
+  <a href="https://unpkg.com/weak-merge/dist/index.min.js">
+    <img src="https://deno.bundlejs.com/?q=weak-merge&config={%22compression%22:{%22type%22:%22brotli%22}}&badge" alt="brotli size" />
   </a>
 </div>
 
@@ -27,7 +30,7 @@ $ npm i weak-merge
 ## Usage
 
 ```js
-import { mergeWeakSets, mergeWeakMaps } from 'weak-merge'
+import { mergeWeakMaps, mergeWeakSets } from 'weak-merge'
 
 const [a, b, c, d] = [{}, {}, {}, {}]
 
@@ -55,7 +58,7 @@ console.log(weakSet1.has(d))
 
 const weakMap1 = new WeakMap([
   [a, 1],
-  [b, 2]
+  [b, 2],
 ])
 const weakMap2 = new WeakMap([[c, 3]])
 
@@ -120,10 +123,10 @@ For bugs and feature requests,
 [please create an issue](https://github.com/TomerAberbach/weak-merge/issues/new).
 
 For pull requests, please read the
-[contributing guidelines](https://github.com/TomerAberbach/lfi/blob/master/contributing.md).
+[contributing guidelines](https://github.com/TomerAberbach/weak-merge/blob/main/contributing.md).
 
 ## License
 
-[Apache 2.0](https://github.com/TomerAberbach/weak-merge/blob/main/license)
+[Apache License 2.0](https://github.com/TomerAberbach/weak-merge/blob/main/license)
 
 This is not an official Google product.

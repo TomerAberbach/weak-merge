@@ -14,44 +14,38 @@
  * limitations under the License.
  */
 
-import isWeakSet from 'is-weakset'
+class MergedWeakSet<Value extends WeakKey> extends WeakSet<Value> {
+  readonly #deletedValues: WeakSet<Value>
+  readonly #weakSets: WeakSet<Value>[]
 
-class MergedWeakSet extends WeakSet {
-  constructor(weakSets) {
+  public constructor(weakSets: WeakSet<Value>[]) {
     super()
-
-    this.deletedValues = new WeakSet()
-    this.weakSets = weakSets
+    this.#deletedValues = new WeakSet()
+    this.#weakSets = weakSets
   }
 
-  add(value) {
-    this.deletedValues.delete(value)
+  public override add(value: Value): this {
+    this.#deletedValues.delete(value)
     return super.add(value)
   }
 
-  delete(value) {
+  public override delete(value: Value): boolean {
     const isDeleting = this.has(value)
 
     super.delete(value)
-    this.deletedValues.add(value)
+    this.#deletedValues.add(value)
 
     return isDeleting
   }
 
-  has(value) {
+  public override has(value: Value): boolean {
     return (
-      !this.deletedValues.has(value) &&
-      (super.has(value) || this.weakSets.some(weakSet => weakSet.has(value)))
+      !this.#deletedValues.has(value) &&
+      (super.has(value) || this.#weakSets.some(weakSet => weakSet.has(value)))
     )
   }
 }
 
-export const mergeWeakSets = (...weakSets) => {
-  for (const weakSet of weakSets) {
-    if (!isWeakSet(weakSet)) {
-      throw new TypeError(`mergeWeakSets expects WeakSets`)
-    }
-  }
-
-  return new MergedWeakSet(weakSets)
-}
+export const mergeWeakSets = <Value extends WeakKey>(
+  ...weakSets: WeakSet<Value>[]
+): WeakSet<Value> => new MergedWeakSet(weakSets)

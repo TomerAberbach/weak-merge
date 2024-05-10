@@ -14,5 +14,5 @@
  * limitations under the License.
  */
 
-export { mergeWeakSets } from './merge-weak-sets.js'
-export { mergeWeakMaps } from './merge-weak-maps.js'
+export { mergeWeakSets } from './merge-weak-sets.ts'
+export { mergeWeakMaps } from './merge-weak-maps.ts'
